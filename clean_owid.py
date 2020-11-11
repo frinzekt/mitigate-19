@@ -17,6 +17,6 @@ oxford_df = pd.read_csv(
 
 owid_df = owid_df[owid_df[:]["iso_code"].apply(lambda x: isinstance(x, str))]
 oxford_df["CountryCode"] = oxford_df["CountryCode"].astype(str)
-print(len(np.unique(owid_df["iso_code"])))
-print(len(np.unique(oxford_df["CountryCode"])))
-df = owid_df.merge(oxford_df, left_on=["iso_code"], right_on=["CountryCode"], how="left")
+df = owid_df.merge(oxford_df, left_on=["iso_code", "date"], right_on=["CountryCode", "Date"], how="left")
+df.drop("CountryName", inplace=True, axis="columns")
+df.to_csv("owid_oxford_merged.csv", index=False)
