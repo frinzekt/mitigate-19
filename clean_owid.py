@@ -17,6 +17,8 @@ oxford_df = pd.read_csv(
 
 owid_df = owid_df[owid_df[:]["iso_code"].apply(lambda x: isinstance(x, str))]
 oxford_df["CountryCode"] = oxford_df["CountryCode"].astype(str)
+# oxford_df = oxford_df[np.logicalor(oxford_df["CountryCode"] != "USA"), np.logicaland((oxford_df["CountryCode"] == "USA" & oxford_df["RegionName"].isnull())]
+oxford_df = oxford_df[np.logical_or(oxford_df["CountryCode"] != "USA", np.logical_and(oxford_df["CountryCode"] == "USA", oxford_df["RegionName"].isnull()))]
 df = owid_df.merge(oxford_df, left_on=["iso_code", "date"], right_on=["CountryCode", "Date"], how="left")
 df.drop("CountryName", inplace=True, axis="columns")
 df.to_csv("owid_oxford_merged.csv", index=False)
