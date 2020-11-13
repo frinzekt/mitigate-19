@@ -1,20 +1,16 @@
 <template>
-  <div class="home">
-    <v-container
-    >
-    <v-row
-      align='center'
-      justify='center'
+  <div class='home'>
+    <v-container>
+      <v-row
+      wrap
       >
-        <v-col>
+        <v-col cols='6'>
           <SimControls />
         </v-col>
-        <v-col>
+        <v-col cols='6'>
           <v-card>
-            <v-card-title>
-              Daily Cases
-            </v-card-title>
-              <GraphSim />
+            <v-card-title> Daily Cases </v-card-title>
+            <GraphSim />
           </v-card>
         </v-col>
       </v-row>

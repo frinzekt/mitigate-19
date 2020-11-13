@@ -3,14 +3,14 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-function calculateCases(mitigationLevels, mitigationEffects) {
+function calculateCases(mitigationLevels, mitigationEffects, currentDay) {
   const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
     if (typeof mitigationLevels[mitKey] !== 'undefined') {
       return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
     }
     return acc;
   }, 0);
-  return mitigationEffects[0] + coefficientVals;
+  return mitigationEffects[0] + coefficientVals + mitigationEffects[14] * currentDay;
 }
 
 export default new Vuex.Store({
@@ -20,20 +20,22 @@ export default new Vuex.Store({
     newCases: [],
     mitigationLevels: {},
     mitigationEffects: {
-      0: 2.9210526313963783,
-      1: 1106.2977107310305,
-      2: 186.6691558352654,
-      3: 760.076377304738,
-      4: 4501.329575823488,
-      5: 867.0828531747405,
-      6: 65.60007638255261,
-      7: -174.1810173493972,
-      8: 2848.982583141036,
-      9: -595.122576424033,
-      10: 194.08680831566494,
-      11: -76.86994372551989,
-      12: 194.0868083156648,
-      13: 3567.1663577200757,
+      0: 0,
+      1: -402.16673808482875,
+      2: 1684.3602563772204,
+      3: 310.8952363169325,
+      4: 811.6903236195732,
+      5: 2187.8906635480243,
+      6: 489.0801720013597,
+      7: -470.7719920923992,
+      8: -271.78393696707127,
+      9: 1221.9028332767414,
+      10: -1750.1569378405422,
+      11: -494.2256362203956,
+      12: -643.3034244138163,
+      13: -494.22563622039513,
+      14: 2153.5186994384967,
+      15: 57.609729922086764,
     },
   },
   getters: {
@@ -60,9 +62,9 @@ export default new Vuex.Store({
   },
   actions: {
     simulateDay({ commit }) {
-      // const { lastCase } = this.getters;
+      const { currentDay } = this.getters;
       const { mitigationLevels, mitigationEffects } = this.state;
-      const newCase = calculateCases(mitigationLevels, mitigationEffects);
+      const newCase = calculateCases(mitigationLevels, mitigationEffects, currentDay);
       // const newCase = Math.exp(lastCase);
       commit('addCase', newCase);
       commit('addDay');
