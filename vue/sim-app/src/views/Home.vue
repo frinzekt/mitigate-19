@@ -7,12 +7,15 @@
       justify='center'
       >
         <v-col>
-          <v-card>
-            <GraphSim />
-          </v-card>
+          <SimControls />
         </v-col>
         <v-col>
-          <SimControls />
+          <v-card>
+            <v-card-title>
+              Daily Cases
+            </v-card-title>
+              <GraphSim />
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -26,9 +29,17 @@ import SimControls from '../components/SimControls.vue';
 // @ is an alias to /src
 export default {
   name: 'Home',
+  data() {
+    return {
+      graphElem: null,
+    };
+  },
   components: {
     GraphSim,
     SimControls,
+  },
+  mounted() {
+    this.graphElem = document.getElementById('graphElem');
   },
 };
 </script>

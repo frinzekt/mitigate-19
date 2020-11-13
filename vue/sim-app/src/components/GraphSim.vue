@@ -1,6 +1,6 @@
 <template>
   <div id='chart'>
-    <div style='width: 600px; height: 250px'>
+    <div>
       <div id='graph'></div>
     </div>
   </div>
@@ -13,6 +13,16 @@ export default {
   data() {
     return {
       currentDay: 1,
+      layout: {
+        title: 'New cases per day',
+        xaxis: {
+          title: 'time (days)',
+        },
+        yaxis: {
+          title: 'cases',
+        },
+        margin: { t: 0 },
+      },
     };
   },
   methods: {
@@ -20,15 +30,11 @@ export default {
       this.currentDay += 1;
       this.$store.commit('addCase', Math.exp(this.currentDay));
       this.$store.commit('addDay');
-      Plotly.react('graph', [this.caseData], {
-        margin: { t: 0 },
-      });
+      Plotly.react('graph', [this.caseData], this.layout);
     },
   },
   mounted() {
-    Plotly.newPlot('graph', [this.caseData], {
-      margin: { t: 0 },
-    });
+    Plotly.newPlot('graph', [this.caseData], this.layout);
   },
   computed: {
     caseData() {
