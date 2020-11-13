@@ -11,7 +11,8 @@ export default new Vuex.Store({
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
-    currentDay: (state) => (state.days.splice(-1)[0]),
+    currentDay: (state) => (state.days.slice(-1)[0]),
+    lastCase: (state) => (state.cases.slice(-1)[0]),
   },
   mutations: {
     addCase(state, newCase) {
@@ -22,6 +23,12 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    simulateDay({ commit }) {
+      const { lastCase } = this.getters;
+      const newCase = Math.exp(lastCase);
+      commit('addCase', newCase);
+      commit('addDay');
+    },
   },
   modules: {
   },

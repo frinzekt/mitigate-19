@@ -6,7 +6,14 @@
       align='center'
       justify='center'
       >
-        <GraphSim />
+        <v-col>
+          <v-card>
+            <GraphSim />
+          </v-card>
+        </v-col>
+        <v-col>
+          <SimControls />
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -14,12 +21,14 @@
 
 <script>
 import GraphSim from '../components/GraphSim.vue';
+import SimControls from '../components/SimControls.vue';
 
 // @ is an alias to /src
 export default {
   name: 'Home',
   components: {
     GraphSim,
+    SimControls,
   },
 };
 </script>
