@@ -72,7 +72,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4geodata_worldLow from '@amcharts/amcharts4-geodata/worldLow';
-import mapsData from '../data/maps';
+import mapsData, {convert3LetterTo2LetterCountry, convert2LetterTo3LetterCountry} from '../data/maps';
 
 am4core.useTheme(am4themes_animated);
 
@@ -120,6 +120,10 @@ export default {
     const hs = polygonTemplate.states.create('hover');
     hs.properties.fill = am4core.color('#367B25');
 
+    const countriesDataAvailable = Object.keys(mapsData).map(convert3LetterTo2LetterCountry);
+    countriesDataAvailable.forEach((key) => {
+      polygonSeries.getPolygonById(key).fill = am4core.color('#ffffff');
+    });
     polygonTemplate.events.on('hit', (ev) => {
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
