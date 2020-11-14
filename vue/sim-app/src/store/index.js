@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import jStat from 'jstat';
 
 Vue.use(Vuex);
 
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     days: [0],
     cases: [0],
     newCases: [0],
+    currentCases: {},
+    susceptible: [0],
+    resolved: [0],
     mitigationLevels: {},
     mitigationEffects: {
       0: 0,
@@ -63,6 +67,20 @@ export default new Vuex.Store({
     },
     addNewDailyCase(state, newCase) {
       state.newCases = [...state.newCases, newCase];
+      // const todaysCases = {};
+      // todaysCases[this.getters.currentDay] = newCase;
+      // let newCurrentCases = {
+      //   ...state.currentCases,
+      //   ...todaysCases,
+      // };
+      // const { currentDay } = this.getters;
+      // newCurrentCases = Object.keys(newCurrentCases).reduce((acc, caseKey) => {
+      //   const dayDelta = currentDay - caseKey;
+      //   const remainingCases = jStat.normal.cdf(dayDelta, 16, 4);
+      // }, {});
+      // state.currentCases = {
+      //   ...newCurrentCases,
+      // };
     },
     addDay(state) {
       state.days = [...state.days, this.getters.currentDay + 1];
@@ -87,6 +105,7 @@ export default new Vuex.Store({
       commit('addNewTotalCase', newTotalCases);
       commit('addNewDailyCase', newDailyCase);
       commit('addDay');
+      console.log(jStat.normal.cdf(0.5, 0, 1));
     },
   },
   modules: {
