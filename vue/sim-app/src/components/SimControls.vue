@@ -25,7 +25,13 @@
           <h3>DAY: {{ $store.getters.currentDay }}</h3>
         </v-col>
         <v-col cols="12" sm="6" md="6" depressed class="text-center">
-          <h3>CASES: {{ Math.round($store.getters.lastCase) }} </h3>
+          <h3>TOTAL CASES: {{ $store.getters.lastCase }} </h3>
+        </v-col>
+        <v-col cols="12" sm="6" md="6" depressed class="text-center">
+          <h3>ACTIVE CASES: {{ $store.getters.getActiveCases }} </h3>
+        </v-col>
+        <v-col cols="12" sm="6" md="6" depressed class="text-center">
+          <h3>RESOLVED: {{ $store.getters.getResolvedCases }} </h3>
         </v-col>
       </v-row>
       <v-card-subtitle><b>Simulation settings:</b></v-card-subtitle>
