@@ -116,7 +116,7 @@ export default {
     // Configure series
     const polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = '{name}';
-    polygonTemplate.fill = am4core.color('#74B266');
+    polygonTemplate.fill = am4core.color('#ffffff');
 
     // Create hover state and set alternative fill color
     const hs = polygonTemplate.states.create('hover');
@@ -156,7 +156,7 @@ export default {
       window.countriesDataAvailable = countriesDataAvailable;
       countriesDataAvailable.forEach((key) => {
         try {
-          polygonSeries.getPolygonById(key).fill = am4core.color('#ffffff');
+          polygonSeries.getPolygonById(key).fill = am4core.color('#74B266');
         } catch (err) { console.log(err); }
       });
     }, 1);
