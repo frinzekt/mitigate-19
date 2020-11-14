@@ -159,7 +159,7 @@ export default {
           polygonSeries.getPolygonById(key).fill = am4core.color('#74B266');
         } catch (err) { console.log(err); }
       });
-    }, 1);
+    }, 100); // HACK COLOR
   },
 };
 </script>

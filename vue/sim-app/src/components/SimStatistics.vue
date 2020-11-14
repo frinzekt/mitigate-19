@@ -18,6 +18,15 @@
             mdi-stop-circle-outline
           </v-icon>
         </v-btn>
+        <v-btn class="pa-2" x-large color="info" min-width="50%"
+        v-show="sim === false"
+        to='/'
+        >
+         RETURN TO MAP
+          <v-icon large class="pl-3" >
+            mdi-map-marker-radius
+          </v-icon>
+        </v-btn>
       </v-card-actions>
       <br>
       <v-row>
