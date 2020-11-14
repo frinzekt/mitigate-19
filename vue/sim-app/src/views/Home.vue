@@ -9,7 +9,7 @@
         </v-col>
         <v-col cols='6'>
             <v-card>
-              <GraphSim
+              <totalCasesSim
               :graphElement='totalCasesDiv'
               />
               <div :id='totalCasesDiv' class='graph'>
@@ -17,7 +17,7 @@
             </v-card>
           <br/>
              <v-card>
-              <GraphSim
+              <newCasesSim
               :graphElement='newCasesDiv'
               />
               <div :id='newCasesDiv' class='graph'>
@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import GraphSim from '../components/GraphSim.vue';
+import totalCasesSim from '../components/totalCasesSim.vue';
+import newCasesSim from '../components/newCasesSim.vue';
 import SimControls from '../components/SimControls.vue';
 
 // @ is an alias to /src
@@ -43,7 +44,8 @@ export default {
     };
   },
   components: {
-    GraphSim,
+    totalCasesSim,
+    newCasesSim,
     SimControls,
   },
   mounted() {

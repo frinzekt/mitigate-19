@@ -1,8 +1,5 @@
 <template>
   <div id='chart'>
-    <div>
-      <div id='graph'></div>
-    </div>
   </div>
 </template>
 
@@ -17,14 +14,13 @@ export default {
   },
   data() {
     return {
-      currentDay: 1,
       layout: {
         title: 'New cases per day',
         xaxis: {
-          title: 'time (days)',
+          title: 'Time (days)',
         },
         yaxis: {
-          title: 'cases',
+          title: 'New cases',
         },
         margin: {
           t: 50,
@@ -43,7 +39,7 @@ export default {
   },
   computed: {
     caseData() {
-      return this.$store.getters.getCaseData;
+      return this.$store.getters.getNewCaseData;
     },
   },
   watch: {
