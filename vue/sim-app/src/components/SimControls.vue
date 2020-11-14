@@ -33,9 +33,6 @@
         <v-col cols="12" sm="6" md="6" depressed class="text-center">
           <h3>RESOLVED: {{ $store.getters.getResolvedCases }} </h3>
         </v-col>
-        <v-col cols="12" sm="6" md="6" depressed class="text-center">
-          <h3>Susecptible: </h3>
-        </v-col>
       </v-row>
       <v-card-subtitle><b>Simulation settings:</b></v-card-subtitle>
       <v-card-text>

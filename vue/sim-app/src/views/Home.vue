@@ -23,6 +23,7 @@
               <div :id='newCasesDiv' class='graph'>
               </div>
             </v-card>
+            <br />
             <v-card>
               <SIR
               :graphElement='SIRDiv'
