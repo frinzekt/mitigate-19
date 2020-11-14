@@ -125,6 +125,8 @@ export default {
       ev.target.series.chart.zoomToMapObject(ev.target);
       this.selectedCountry = ev.target.dataItem.dataContext.name;
       window.selectedCountryCode = ev.target.dataItem.dataContext.id;
+      console.log(mapsData);
+      console.log(window.selectedCountryCode);
       this.dialog = !this.dialog;
       // get object info
       /* eslint-disable */
