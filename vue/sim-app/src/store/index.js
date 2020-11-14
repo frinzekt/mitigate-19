@@ -5,14 +5,17 @@ import mapsData from "../data/maps"
 
 Vue.use(Vuex);
 
-function calculateTotalCases(mitigationLevels, mitigationEffects) {
+function calculateTotalCases(mitigationLevels, mitigationEffects, intercept) {
   const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
+    if (mitKey === 0) {
+      return acc;
+    }
     if (typeof mitigationLevels[mitKey] !== 'undefined') {
       return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
     }
     return acc;
   }, 0);
-  return mitigationEffects[0] + coefficientVals;
+  return intercept + coefficientVals;
 }
 
 export default new Vuex.Store({
@@ -32,22 +35,22 @@ export default new Vuex.Store({
     susceptibleCases: [25000000],
     activeCases: [1],
     resolvedCases: [0],
+    intercept: 0.6931471805599453,
     mitigationEffects: {
-      0: 0.6931471805599453,
-      1: 0.001829422386127879,
-      2: -0.07784000618252508,
-      3: -0.06234176943449615,
-      4: -0.07425903166854986,
-      5: 0.06470419291570209,
-      6: 0.08960897735105754,
-      7: -0.1675574311170926,
-      8: 0.2147396364283757,
-      9: -0.08269826212945952,
-      10: -0.07521791465366225,
-      11: -0.07364026019361672,
-      12: -0.015906575848049855,
-      13: -0.07364026019361689,
-      14: -0.001825573333957288,
+      0: -0.1829422386127879,
+      1: -0.07784000618252508,
+      2: -0.06234176943449615,
+      3: -0.07425903166854986,
+      4: -0.06470419291570209,
+      5: -0.08960897735105754,
+      6: -0.1675574311170926,
+      7: -0.2147396364283757,
+      8: -0.08269826212945952,
+      9: -0.07521791465366225,
+      10: -0.07364026019361672,
+      11: -0.015906575848049855,
+      12: -0.07364026019361689,
+      13: -0.001825573333957288,
 
     },
   },
@@ -64,6 +67,7 @@ export default new Vuex.Store({
     getActiveData: (state) => ({ x: state.days, y: state.activeCases }),
     getResolvedData: (state) => ({ x: state.days, y: state.resolvedCases }),
     getPopulation: (state) => (state.population),
+    getIntercept: (state) => (state.intercept),
   },
   mutations: {
     initialState(initialSusceptible, initialInfected, countryCode) {
@@ -142,12 +146,12 @@ export default new Vuex.Store({
   actions: {
     simulateDay({ commit }) {
       const { mitigationLevels, mitigationEffects } = this.state;
-      const { lastCase, lastUncontrolledCase } = this.getters;
-      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects);
+      const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
+      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
-      let newUncontrolledCase = Math.exp(mitigationEffects[0]) * lastUncontrolledCase;
+      let newUncontrolledCase = Math.exp(getIntercept) * lastUncontrolledCase;
       if (newUncontrolledCase >= this.getters.getPopulation) {
         newUncontrolledCase = this.getters.getPopulation;
       }
