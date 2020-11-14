@@ -3,33 +3,34 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-function calculateStringency(mitigationLevels) {
-  const measureSum = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
-    if (typeof mitigationLevels[mitKey] !== 'undefined') {
-      return acc + mitigationLevels[mitKey];
-    }
-    return acc;
-  }, 0);
-  return 36 / (36 + measureSum);
-}
-function calculateTotalCases(stringency) {
-  return 91 + 47654450 * Math.exp(15 * stringency);
-}
-// function calculateCases(mitigationLevels, mitigationEffects, currentDay) {
-//   const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
+// function calculateStringency(mitigationLevels) {
+//   const measureSum = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
 //     if (typeof mitigationLevels[mitKey] !== 'undefined') {
-//       return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
+//       return acc + mitigationLevels[mitKey];
 //     }
 //     return acc;
 //   }, 0);
-//   return mitigationEffects[0] + coefficientVals + mitigationEffects[14] * currentDay;
+//   return 36 / (36 + measureSum);
 // }
+// function calculateTotalCases(stringency) {
+//   return 91 + 47654450 * Math.exp(15 * stringency);
+// }
+
+function calculateTotalCases(mitigationLevels, mitigationEffects, currentDay) {
+  const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
+    if (typeof mitigationLevels[mitKey] !== 'undefined') {
+      return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
+    }
+    return acc;
+  }, 0);
+  return mitigationEffects[0] + coefficientVals + mitigationEffects[14] * currentDay;
+}
 
 export default new Vuex.Store({
   state: {
     days: [0],
     cases: [0],
-    newCases: [],
+    newCases: [0],
     mitigationLevels: {},
     mitigationEffects: {
       0: 0,
@@ -52,12 +53,16 @@ export default new Vuex.Store({
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
+    getNewCaseData: (state) => ({ x: state.days, y: state.newCases }),
     currentDay: (state) => (state.days.slice(-1)[0]),
     lastCase: (state) => (state.cases.slice(-1)[0]),
   },
   mutations: {
-    addCase(state, newCase) {
+    addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
+    },
+    addNewDailyCase(state, newCase) {
+      state.newCases = [...state.newCases, newCase];
     },
     addDay(state) {
       state.days = [...state.days, this.getters.currentDay + 1];
@@ -74,15 +79,13 @@ export default new Vuex.Store({
   },
   actions: {
     simulateDay({ commit }) {
-      // const { currentDay } = this.getters;
-      // const { mitigationLevels, mitigationEffects } = this.state;
-      const { mitigationLevels } = this.state;
-      // const newCase = calculateCases(mitigationLevels, mitigationEffects, currentDay);
-      const stringency = calculateStringency(mitigationLevels);
-      console.log(stringency);
-      const newCase = calculateTotalCases(stringency);
-      // const newCase = Math.exp(lastCase);
-      commit('addCase', newCase);
+      const { mitigationLevels, mitigationEffects } = this.state;
+      const { currentDay } = this.getters;
+      // const stringency = calculateStringency(mitigationLevels);
+      const newTotalCases = calculateTotalCases(mitigationLevels, mitigationEffects, currentDay);
+      const newDailyCase = newTotalCases - this.getters.lastCase;
+      commit('addNewTotalCase', newTotalCases);
+      commit('addNewDailyCase', newDailyCase);
       commit('addDay');
     },
   },
