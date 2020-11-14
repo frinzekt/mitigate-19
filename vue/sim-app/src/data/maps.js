@@ -642,8 +642,14 @@ const countryMapping = [
   { "name": "Zimbabwe", "let2": "ZW", "let3": "ZWE" }
 ];
 
-export const convert2LetterTo3LetterCountry = (twoLetter) => countryMapping.filter(countryObject => countryObject.let2 == twoLetter)[0].let3
-export const convert3LetterTo2LetterCountry = (threeLetter) => countryMapping.filter(countryObject => countryObject.let3 == threeLetter)[0].let2
+export const convert2LetterTo3LetterCountry = (twoLetter) => {
+  const result = countryMapping.filter(countryObject => countryObject.let2 == twoLetter)
+  return result.lengt==0 ? "" : result[0].let3
+}
+export const convert3LetterTo2LetterCountry = (threeLetter) => {
+  const result = countryMapping.filter(countryObject => countryObject.let3 == threeLetter)
+  return result.length==0 ? "" : result[0].let2 
+}
 
 export default mapsData;
 
