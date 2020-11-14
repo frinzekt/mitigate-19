@@ -120,6 +120,10 @@ export default {
     const hs = polygonTemplate.states.create('hover');
     hs.properties.fill = am4core.color('#367B25');
 
+    const countriesDataAvailable = Object.keys(mapsData);
+    countriesDataAvailable.forEach((key) => {
+      polygonSeries.getPolygonById(key).fill = am4core.color('#ffffff');
+    });
     polygonTemplate.events.on('hit', (ev) => {
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
