@@ -40,9 +40,13 @@
           </div>
           <div v-else>
             <br>
+            <br>
+            <h3><u>Country Statistics</u></h3>
+            <br>
             <ul v-for="([statname, value], i) in Object.entries(selectedCountryStats).slice(15)"
             :key="i">
-              <p><b>> {{statname}}:</b> {{value}}</p>
+              <p><b>> {{capFirst(statname)}}:</b>
+              {{Math.round(value)}} {{unitOf(capFirst(statname))}}</p>
             </ul>
           </div>
         </v-card-text>
@@ -92,6 +96,23 @@ export default {
       this.selectedCountry = '';
       window.chart.goHome();
     },
+    capFirst(stringg) {
+      const out = stringg.replace(/_/g, ' ');
+      return out.charAt(0).toUpperCase() + out.slice(1);
+    },
+    /* eslint-disable */
+    unitOf(stringg) {
+      if (stringg === ' Population') {
+        return 'Persons';
+      } else if (stringg === ' Population density') {
+        return ' Persons per km squared';
+      } else if (stringg === 'Gdp per capita') {
+        return ' US Dollars';
+      } else if (stringg === 'Life expectancy') {
+        return ' Years';
+      }
+    },
+    /* eslint-enable */
   },
   mounted() {
     // Create map instance
