@@ -124,11 +124,12 @@ export default {
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
       this.selectedCountry = ev.target.dataItem.dataContext.name;
+      window.selectedCountryCode = ev.target.dataItem.dataContext.id;
       this.dialog = !this.dialog;
       // get object info
       /* eslint-disable */
-      if (mapsData.hasOwnProperty(this.selectedCountry)) {
-        this.selectedCountryStats = mapsData[this.selectedCountry];
+      if (mapsData.hasOwnProperty(window.selectedCountryCode)) {
+        this.selectedCountryStats = mapsData[window.selectedCountryCode];
       } else {
         this.selectedCountryStats = {};
       }
