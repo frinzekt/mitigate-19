@@ -1,36 +1,56 @@
 <template>
   <div class='home'>
     <v-container>
+      <v-row align="center"
+      justify="center"
+        wrap
+        >
+          <v-col cols='6'>
+            <SimStatistics />
+          </v-col>
+        </v-row>
+    </v-container>
+    <v-container>
+      <v-row wrap>
+          <v-col cols='4'>
+              <v-card>
+                <totalCasesSim
+                :graphElement='totalCasesDiv'
+                />
+                <div :id='totalCasesDiv' class='graph'>
+                </div>
+              </v-card>
+          </v-col>
+          <v-col cols='4'>
+            <v-card>
+            <newCasesSim
+            :graphElement='newCasesDiv'
+            />
+            <div :id='newCasesDiv' class='graph'>
+            </div>
+          </v-card>
+          </v-col>
+          <v-col cols='4'>
+            <v-card>
+            <SIR
+            :graphElement='SIRDiv'
+            />
+            <div :id='SIRDiv' class='graph'>
+            </div>
+          </v-card>
+          </v-col>
+      </v-row>
+    </v-container>
+    <v-container>
       <v-row
+      align='center'
+      justify='center'
       wrap
       >
-        <v-col cols='6'>
-          <SimControls />
-        </v-col>
-        <v-col cols='6'>
-            <v-card>
-              <totalCasesSim
-              :graphElement='totalCasesDiv'
-              />
-              <div :id='totalCasesDiv' class='graph'>
-              </div>
-            </v-card>
-          <br/>
-             <v-card>
-              <newCasesSim
-              :graphElement='newCasesDiv'
-              />
-              <div :id='newCasesDiv' class='graph'>
-              </div>
-            </v-card>
-            <br />
-            <v-card>
-              <SIR
-              :graphElement='SIRDiv'
-              />
-              <div :id='SIRDiv' class='graph'>
-              </div>
-            </v-card>
+        <v-col
+        cols='12'
+        >
+          <SimControls/>
         </v-col>
       </v-row>
     </v-container>
@@ -40,6 +60,7 @@
 <script>
 import totalCasesSim from '../components/totalCasesSim.vue';
 import newCasesSim from '../components/newCasesSim.vue';
+import SimStatistics from '../components/SimStatistics.vue';
 import SimControls from '../components/SimControls.vue';
 import SIR from '../components/SIR.vue';
 
@@ -56,6 +77,7 @@ export default {
   components: {
     totalCasesSim,
     newCasesSim,
+    SimStatistics,
     SimControls,
     SIR,
   },
