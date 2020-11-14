@@ -10,31 +10,33 @@
           </v-col>
         </v-row>
     </v-container>
-    <v-row wrap>
-        <v-col cols='4'>
+    <v-container>
+      <v-row wrap>
+          <v-col cols='4'>
+              <v-card>
+                <totalCasesSim
+                :graphElement='totalCasesDiv'
+                />
+                <div :id='totalCasesDiv' class='graph'>
+                </div>
+              </v-card>
+          </v-col>
+          <v-col cols='4'>
             <v-card>
-              <totalCasesSim
-              :graphElement='totalCasesDiv'
-              />
-              <div :id='totalCasesDiv' class='graph'>
-              </div>
-            </v-card>
-        </v-col>
-        <v-col cols='4'>
-          <v-card>
-          <newCasesSim
-          :graphElement='newCasesDiv'
-          />
-          <div :id='newCasesDiv' class='graph'>
-          </div>
-        </v-card>
-        </v-col>
-        <v-col cols='4'>
-          <v-card>
-         Third Graph here
-        </v-card>
-        </v-col>
-      </v-row>
+            <newCasesSim
+            :graphElement='newCasesDiv'
+            />
+            <div :id='newCasesDiv' class='graph'>
+            </div>
+          </v-card>
+          </v-col>
+          <v-col cols='4'>
+            <v-card>
+           Third Graph here
+          </v-card>
+          </v-col>
+        </v-row>
+    </v-container>
     <v-container>
       <v-row align="center"
       justify="center"
