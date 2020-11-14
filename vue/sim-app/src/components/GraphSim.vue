@@ -32,17 +32,11 @@ export default {
         },
       },
       config: {
-        responsive: true,
+        // responsive: true,
       },
     };
   },
   methods: {
-    addData() {
-      this.currentDay += 1;
-      this.$store.commit('addCase', Math.exp(this.currentDay));
-      this.$store.commit('addDay');
-      Plotly.react(this.graphElement, [this.caseData], this.layout, this.config);
-    },
   },
   mounted() {
     Plotly.newPlot(this.graphElement, [this.caseData], this.layout, this.config);
