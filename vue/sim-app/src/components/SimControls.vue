@@ -1,7 +1,33 @@
 <template>
   <div id="controls">
     <v-card>
-      <h2 class="text-center pa-2"><u>Customise the Simulation</u></h2>
+      <br>
+      <v-card-actions class="justify-center pa-2">
+        <v-btn class="pa-2" x-large color="success" min-width="50%"
+        v-show="sim === false" @click="startSim">
+          RUN Simulation
+          <v-icon large class="pl-3" >
+            mdi-play-circle-outline
+          </v-icon>
+        </v-btn>
+
+        <v-btn class="pa-2" x-large color="error" min-width="50%"
+        v-show="sim === true" @click="stopSim">
+          HALT Simulation
+          <v-icon large class="pl-3" >
+            mdi-stop-circle-outline
+          </v-icon>
+        </v-btn>
+      </v-card-actions>
+      <br>
+      <v-row>
+        <v-col cols="12" sm="6" md="6" depressed class="text-center">
+          <h3>DAY: {{ $store.getters.currentDay }}</h3>
+        </v-col>
+        <v-col cols="12" sm="6" md="6" depressed class="text-center">
+          <h3>CASES: {{ Math.round($store.getters.lastCase) }} </h3>
+        </v-col>
+      </v-row>
       <v-card-subtitle><b>Simulation settings:</b></v-card-subtitle>
       <v-card-text>
         <v-expansion-panels>
@@ -10,8 +36,8 @@
               <template v-slot:actions>
                 <v-icon color="error">
                   mdi-blank
-                  </v-icon>
-                  </template>
+                </v-icon>
+              </template>
               <v-row>
                 <v-col cols="12" sm="6" md="4" depressed>
                      <p class="py-1"><b>Simulation speed</b> (seconds/day)</p>
@@ -36,6 +62,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
       </v-card-text>
+      <br>
       <v-card-subtitle><b>Mitigation strategies:</b></v-card-subtitle>
       <v-card-text>
         <v-expansion-panels>
@@ -75,8 +102,7 @@
         </v-expansion-panels>
       </v-card-text>
       <v-card-actions>
-        <v-btn v-show="sim === false" @click="startSim"> Start sim</v-btn>
-        <v-btn v-show="sim === true" @click="stopSim"> Stop sim</v-btn>
+
       </v-card-actions>
     </v-card>
   </div>
