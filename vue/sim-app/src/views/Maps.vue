@@ -293,7 +293,7 @@ export default {
           console.log(err);
         }
       });
-    }, 1);
+    }, 100); // HACK COLOR
   },
 };
 </script>
