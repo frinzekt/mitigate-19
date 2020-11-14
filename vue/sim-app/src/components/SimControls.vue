@@ -3,6 +3,9 @@
     <v-card>
       <v-card-title> Customise the simulation </v-card-title>
       <v-card-text>
+        <p> Total cases: {{ $store.getters.lastCase }} </p>
+        <p> Active cases: {{ $store.getters.getActiveCases }} </p>
+        <p> Resolved cases: {{ $store.getters.getResolvedCases }} </p>
         <ul>
           <li>
             <v-row>
