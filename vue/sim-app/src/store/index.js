@@ -18,16 +18,17 @@ export default new Vuex.Store({
   state: {
     days: [1],
     cases: [1],
+    uncontrolledCases: [1],
     newCases: [1],
     currentCases: {
       0: 1,
     },
     susceptible: [0],
     mitigationLevels: {},
-    initialSusceptible: 1000000,
-    population: 1000000,
+    initialSusceptible: 25000000,
+    population: 25000000,
     totalResCases: 0,
-    susceptibleCases: [1000000],
+    susceptibleCases: [25000000],
     activeCases: [1],
     resolvedCases: [0],
     mitigationEffects: {
@@ -51,9 +52,11 @@ export default new Vuex.Store({
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
+    getUncontrolledCaseData: (state) => ({ x: state.days, y: state.uncontrolledCases }),
     getNewCaseData: (state) => ({ x: state.days, y: state.newCases }),
     currentDay: (state) => (state.days.slice(-1)[0]),
     lastCase: (state) => (state.cases.slice(-1)[0]),
+    lastUncontrolledCase: (state) => (state.uncontrolledCases.slice(-1)[0]),
     getResolvedCases: (state) => (state.totalResCases),
     getActiveCases: (state) => (state.cases.slice(-1)[0] - state.totalResCases),
     getSusceptibleData: (state) => ({ x: state.days, y: state.susceptibleCases }),
@@ -64,6 +67,12 @@ export default new Vuex.Store({
   mutations: {
     addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
+    },
+    addNewUncontrolledCase(state, newUncontrolledCase) {
+      state.uncontrolledCases = [
+        ...state.uncontrolledCases,
+        newUncontrolledCase,
+      ];
     },
     addNewDailyCase(state, newCase) {
       state.newCases = [...state.newCases, newCase];
@@ -122,15 +131,20 @@ export default new Vuex.Store({
   actions: {
     simulateDay({ commit }) {
       const { mitigationLevels, mitigationEffects } = this.state;
-      const { lastCase } = this.getters;
+      const { lastCase, lastUncontrolledCase } = this.getters;
       const rVal = calculateTotalCases(mitigationLevels, mitigationEffects);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
+      let newUncontrolledCase = Math.exp(mitigationEffects[0]) * lastUncontrolledCase;
+      if (newUncontrolledCase >= this.getters.getPopulation) {
+        newUncontrolledCase = this.getters.getPopulation;
+      }
       if (newTotalCases >= this.getters.getPopulation) {
         newTotalCases = this.getters.getPopulation;
       }
       const newDailyCase = newTotalCases - lastCase;
+      commit('addNewUncontrolledCase', newUncontrolledCase);
       commit('addNewTotalCase', newTotalCases);
       commit('addNewDailyCase', newDailyCase);
       commit('addDay');

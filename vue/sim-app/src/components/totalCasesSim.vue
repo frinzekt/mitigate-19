@@ -35,23 +35,32 @@ export default {
   methods: {
   },
   mounted() {
-    Plotly.newPlot(this.graphElement, [this.caseData], this.layout, this.config);
+    Plotly.newPlot(this.graphElement, this.caseData, this.layout, this.config);
   },
   computed: {
     caseData() {
-      return this.$store.getters.getCaseData;
+      return [
+        { ...this.$store.getters.getCaseData, name: 'Actual cases' },
+        { ...this.$store.getters.getUncontrolledCaseData, name: 'Uncontrolled growth' },
+      ];
     },
   },
   watch: {
     caseData() {
-      const xAxis = [...this.caseData.x];
-      const yAxis = [...this.caseData.y];
+      const maxX = Math.max(
+        Math.max(...this.caseData[0].x),
+        Math.max(...this.caseData[1].x),
+      );
+      const maxY = Math.max(
+        Math.max(...this.caseData[0].y),
+        Math.max(...this.caseData[1].y),
+      );
       Plotly.animate(this.graphElement, {
-        data: [this.caseData],
-        traces: [0],
+        data: this.caseData,
+        traces: [0, 1],
         layout: {
-          xaxis: { range: [Math.min(...xAxis), Math.max(...xAxis)] },
-          yaxis: { range: [Math.min(...yAxis), Math.max(...yAxis)] },
+          xaxis: { range: [0, maxX] },
+          yaxis: { range: [0, maxY] },
           margin: {
             t: 50,
             b: 50,
