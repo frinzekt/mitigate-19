@@ -38,23 +38,28 @@ export default new Vuex.Store({
     },
     susceptible: [0],
     mitigationLevels: {},
+    initialSusceptible: 1000000,
     totalResCases: 0,
+    susceptibleCases: [1000000],
+    activeCases: [1],
+    resolvedCases: [0],
     mitigationEffects: {
-      0: 0.9,
-      1: -0.0028409946757642734,
-      2: -0.12088134746950325,
-      3: -0.09681341847794962,
-      4: -0.11532028644532705,
-      5: -0.10048213521767001,
-      6: -0.13915792737940207,
-      7: -0.2602076881195024,
-      8: -0.3334791179962779,
-      9: -0.12842595793420545,
-      10: -0.11680938020303011,
-      11: -0.11435936758966538,
-      12: -0.024702057674936173,
-      13: -0.11435936758966564,
-      14: -0.0028350173045424567,
+      0: 0.6931471805599453,
+      1: 0.001829422386127879,
+      2: -0.07784000618252508,
+      3: -0.06234176943449615,
+      4: -0.07425903166854986,
+      5: 0.06470419291570209,
+      6: 0.08960897735105754,
+      7: -0.1675574311170926,
+      8: 0.2147396364283757,
+      9: -0.08269826212945952,
+      10: -0.07521791465366225,
+      11: -0.07364026019361672,
+      12: -0.015906575848049855,
+      13: -0.07364026019361689,
+      14: -0.001825573333957288,
+
     },
   },
   getters: {
@@ -64,6 +69,9 @@ export default new Vuex.Store({
     lastCase: (state) => (state.cases.slice(-1)[0]),
     getResolvedCases: (state) => (state.totalResCases),
     getActiveCases: (state) => (state.cases.slice(-1)[0] - state.totalResCases),
+    getSusceptibleData: (state) => ({ x: state.days, y: state.susceptibleCases }),
+    getActiveData: (state) => ({ x: state.days, y: state.activeCases }),
+    getResolvedData: (state) => ({ x: state.days, y: state.resolvedCases }),
   },
   mutations: {
     addNewTotalCase(state, newCase) {
@@ -96,6 +104,19 @@ export default new Vuex.Store({
         ...newCurrentCases,
       };
       state.totalResCases += totalResCases;
+
+      state.susceptibleCases = [
+        ...state.susceptibleCases,
+        state.initialSusceptible - this.getters.lastCase,
+      ];
+      state.activeCases = [
+        ...state.activeCases,
+        this.getters.getActiveCases,
+      ];
+      state.resolvedCases = [
+        ...state.resolvedCases,
+        state.totalResCases,
+      ];
     },
     addDay(state) {
       state.days = [...state.days, this.getters.currentDay + 1];

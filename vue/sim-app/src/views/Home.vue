@@ -32,20 +32,27 @@
           </v-col>
           <v-col cols='4'>
             <v-card>
-           Third Graph here
+            <SIR
+            :graphElement='SIRDiv'
+            />
+            <div :id='SIRDiv' class='graph'>
+            </div>
           </v-card>
           </v-col>
-        </v-row>
+      </v-row>
     </v-container>
     <v-container>
-      <v-row align="center"
-      justify="center"
-        wrap
+      <v-row
+      align='center'
+      justify='center'
+      wrap
+      >
+        <v-col
+        cols='12'
         >
-          <v-col cols='12'>
-            <SimControls></SimControls>
-          </v-col>
-        </v-row>
+          <SimControls/>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -55,6 +62,7 @@ import totalCasesSim from '../components/totalCasesSim.vue';
 import newCasesSim from '../components/newCasesSim.vue';
 import SimStatistics from '../components/SimStatistics.vue';
 import SimControls from '../components/SimControls.vue';
+import SIR from '../components/SIR.vue';
 
 // @ is an alias to /src
 export default {
@@ -63,13 +71,15 @@ export default {
     return {
       newCasesDiv: 'newCases',
       totalCasesDiv: 'totalCases',
+      SIRDiv: 'SIRDiv',
     };
   },
   components: {
     totalCasesSim,
     newCasesSim,
-    SimControls,
     SimStatistics,
+    SimControls,
+    SIR,
   },
   mounted() {
     this.graphElem = document.getElementById('graphElem');
