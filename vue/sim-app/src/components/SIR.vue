@@ -40,10 +40,10 @@ export default {
   computed: {
     caseData() {
       return [
-        this.$store.getters.getCaseData,
+        // this.$store.getters.getCaseData,
         // this.$store.getters.getActiveData,
         // this.$store.getters.getResolvedData,
-        // this.$store.getters.getSusceptibleData,
+        this.$store.getters.getSusceptibleData,
       ];
     },
   },

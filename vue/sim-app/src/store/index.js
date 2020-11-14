@@ -38,7 +38,9 @@ export default new Vuex.Store({
     },
     susceptible: [0],
     mitigationLevels: {},
+    initialSusceptible: 1000000,
     totalResCases: 0,
+    susceptibleCases: [1000000],
     mitigationEffects: {
       0: 0.9,
       1: -0.0028409946757642734,
@@ -64,6 +66,8 @@ export default new Vuex.Store({
     lastCase: (state) => (state.cases.slice(-1)[0]),
     getResolvedCases: (state) => (state.totalResCases),
     getActiveCases: (state) => (state.cases.slice(-1)[0] - state.totalResCases),
+    // getSusceptibleCases: (state) => (state.susceptibleCases.slice(-1)[0]),
+    getSusceptibleData: (state) => (state.susceptibleCases),
   },
   mutations: {
     addNewTotalCase(state, newCase) {
@@ -96,6 +100,11 @@ export default new Vuex.Store({
         ...newCurrentCases,
       };
       state.totalResCases += totalResCases;
+
+      state.susceptibleCases = [
+        ...state.susceptibleCases,
+        state.initialSusceptible - this.getters.lastCase,
+      ];
     },
     addDay(state) {
       state.days = [...state.days, this.getters.currentDay + 1];

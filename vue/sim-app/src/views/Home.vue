@@ -23,6 +23,13 @@
               <div :id='newCasesDiv' class='graph'>
               </div>
             </v-card>
+            <v-card>
+              <SIR
+              :graphElement='SIRDiv'
+              />
+              <div :id='SIRDiv' class='graph'>
+              </div>
+            </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -33,6 +40,7 @@
 import totalCasesSim from '../components/totalCasesSim.vue';
 import newCasesSim from '../components/newCasesSim.vue';
 import SimControls from '../components/SimControls.vue';
+import SIR from '../components/SIR.vue';
 
 // @ is an alias to /src
 export default {
@@ -41,12 +49,14 @@ export default {
     return {
       newCasesDiv: 'newCases',
       totalCasesDiv: 'totalCases',
+      SIRDiv: 'SIRDiv',
     };
   },
   components: {
     totalCasesSim,
     newCasesSim,
     SimControls,
+    SIR,
   },
   mounted() {
     this.graphElem = document.getElementById('graphElem');
