@@ -4,27 +4,13 @@ import jStat from 'jstat';
 
 Vue.use(Vuex);
 
-// function calculateStringency(mitigationLevels) {
-//   const measureSum = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
-//     if (typeof mitigationLevels[mitKey] !== 'undefined') {
-//       return acc + mitigationLevels[mitKey];
-//     }
-//     return acc;
-//   }, 0);
-//   return 36 / (36 + measureSum);
-// }
-// function calculateTotalCases(stringency) {
-//   return 91 + 47654450 * Math.exp(15 * stringency);
-// }
-// eslint-disable-next-line
-function calculateTotalCases(mitigationLevels, mitigationEffects, currentDay) {
+function calculateTotalCases(mitigationLevels, mitigationEffects) {
   const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
     if (typeof mitigationLevels[mitKey] !== 'undefined') {
       return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
     }
     return acc;
   }, 0);
-  // return mitigationEffects[0] + coefficientVals + mitigationEffects[15] * currentDay;
   return mitigationEffects[0] + coefficientVals;
 }
 
@@ -39,6 +25,7 @@ export default new Vuex.Store({
     susceptible: [0],
     mitigationLevels: {},
     initialSusceptible: 1000000,
+    population: 1000000,
     totalResCases: 0,
     susceptibleCases: [1000000],
     activeCases: [1],
@@ -71,6 +58,7 @@ export default new Vuex.Store({
     getSusceptibleData: (state) => ({ x: state.days, y: state.susceptibleCases }),
     getActiveData: (state) => ({ x: state.days, y: state.activeCases }),
     getResolvedData: (state) => ({ x: state.days, y: state.resolvedCases }),
+    getPopulation: (state) => (state.population),
   },
   mutations: {
     addNewTotalCase(state, newCase) {
@@ -133,13 +121,14 @@ export default new Vuex.Store({
   actions: {
     simulateDay({ commit }) {
       const { mitigationLevels, mitigationEffects } = this.state;
-      const { currentDay, lastCase } = this.getters;
-      // const stringency = calculateStringency(mitigationLevels);
-      // const newTotalCases = calculateTotalCases(mitigationLevels, mitigationEffects, currentDay);
-      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects, currentDay);
+      const { lastCase } = this.getters;
+      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
+      if (newTotalCases >= this.getters.getPopulation) {
+        newTotalCases = this.getters.getPopulation;
+      }
       const newDailyCase = newTotalCases - lastCase;
       commit('addNewTotalCase', newTotalCases);
       commit('addNewDailyCase', newDailyCase);
