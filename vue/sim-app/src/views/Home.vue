@@ -9,8 +9,20 @@
         </v-col>
         <v-col cols='6'>
           <v-card>
-            <v-card-title> Daily Cases </v-card-title>
-            <GraphSim />
+            <GraphSim
+            :graphElement='newCasesDiv'
+            />
+            <div :id='newCasesDiv'>
+            </div>
+          </v-card>
+        </v-col>
+        <v-col cols='6'>
+          <v-card>
+            <GraphSim
+            :graphElement='totalCasesDiv'
+            />
+            <div :id='totalCasesDiv'>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -27,7 +39,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      graphElem: null,
+      newCasesDiv: 'newCases',
+      totalCasesDiv: 'totalCases',
     };
   },
   components: {
