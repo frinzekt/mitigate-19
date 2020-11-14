@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import jStat from 'jstat';
+import jStat, { map } from 'jstat';
+import mapsData from "../data/maps"
 
 Vue.use(Vuex);
 
@@ -65,6 +66,16 @@ export default new Vuex.Store({
     getPopulation: (state) => (state.population),
   },
   mutations: {
+    initialState(initialSusceptible, initialInfected, countryCode) {
+      //  THIS NEEDS TO BE CHEKED
+      state.initialSusceptible = initialSusceptible
+      state.population = mapsData[countryCode]["population"]
+      const countryStatistic = mapsData[countryCode].slice(0, 15)
+      state.mitigationEffects = { ...countryStatistic }
+      state.cases = initialInfected > 0 ? [initialInfected] : [1]
+      state.newCases = initialInfected > 0 ? [initialInfected] : [1]
+      state.currentCases = initialInfected > 0 ? { 0: initialInfected } : { 0: 1 }
+    },
     addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
     },
