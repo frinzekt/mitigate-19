@@ -10,7 +10,7 @@
           Welcome to the COVID-19 mitigation strategy simulator.
         </v-card-title>
         <v-card-text>
-          Please select a country that you wish to model the mitigation simulation...
+          Please select a country that you wish to model the mitigation simulation.
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

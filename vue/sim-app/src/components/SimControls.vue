@@ -49,7 +49,7 @@
                 </v-col>
                 <v-col cols="6" md="6">
                   <v-slider
-                    max="950"
+                    max="1450"
                     min="50"
                     depressed
                     v-model="speed"
