@@ -642,11 +642,11 @@ const countryMapping = [
   { "name": "Zimbabwe", "let2": "ZW", "let3": "ZWE" }
 ];
 
-export const convert2LetterTo3LetterCountry = (twoLetter) => {
+export const convert2LetterCountry = (twoLetter) => {
   const result = countryMapping.filter(countryObject => countryObject.let2 == twoLetter)
   return result.length == 0 ? "" : result[0].let3
 }
-export const convert3LetterTo2LetterCountry = (threeLetter) => {
+export const convert3LetterCountry = (threeLetter) => {
   const result = countryMapping.filter(countryObject => countryObject.let3 == threeLetter)
   return result.length == 0 ? "" : result[0].let2
 }

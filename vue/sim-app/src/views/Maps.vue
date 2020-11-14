@@ -39,7 +39,9 @@
             <p><b>ERROR:</b> Currently no data available for {{selectedCountry}}.</p>
           </div>
           <div v-else>
-            <ul v-for="([statname, value], i) in Object.entries(selectedCountryStats)" :key="i">
+            <br>
+            <ul v-for="([statname, value], i) in Object.entries(selectedCountryStats).slice(15)"
+            :key="i">
               <p><b>> {{statname}}:</b> {{value}}</p>
             </ul>
           </div>
@@ -72,7 +74,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4geodata_worldLow from '@amcharts/amcharts4-geodata/worldLow';
-import mapsData, {convert3LetterTo2LetterCountry, convert2LetterTo3LetterCountry} from '../data/maps';
+import mapsData, { convert2LetterCountry } from '../data/maps';
 
 am4core.useTheme(am4themes_animated);
 
@@ -120,24 +122,19 @@ export default {
     const hs = polygonTemplate.states.create('hover');
     hs.properties.fill = am4core.color('#367B25');
 
-    const countriesDataAvailable = Object.keys(mapsData).map(convert3LetterTo2LetterCountry);
-    countriesDataAvailable.forEach((key) => {
-      polygonSeries.getPolygonById(key).fill = am4core.color('#ffffff');
-    });
+    // const countriesDataAvailable = Object.keys(mapsData).map(convert3LetterCountry);
+    // countriesDataAvailable.forEach((key) => {
+    //   polygonSeries.getPolygonById(key).fill = am4core.color('#ffffff');
+    // });
     polygonTemplate.events.on('hit', (ev) => {
+      window.selectedCountryCode = convert2LetterCountry(ev.target.dataItem.dataContext.id);
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
+      /* eslint-disable */
       this.selectedCountry = ev.target.dataItem.dataContext.name;
-<<<<<<< HEAD
-      window.selectedCountryCode = ev.target.dataItem.dataContext.id;
-      console.log(mapsData);
-      console.log(window.selectedCountryCode);
-=======
-      window.selectedCountryCode = convert2LetterTo3LetterCountry(ev.target.dataItem.dataContext.id);
->>>>>>> 3e94e3b6a9cc9a48fc2532247521daa49ffe7ee3
+     
       this.dialog = !this.dialog;
       // get object info
-      /* eslint-disable */
       if (mapsData.hasOwnProperty(window.selectedCountryCode)) {
         this.selectedCountryStats = mapsData[window.selectedCountryCode];
       } else {
