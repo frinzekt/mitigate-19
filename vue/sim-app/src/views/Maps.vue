@@ -39,7 +39,9 @@
             <p><b>ERROR:</b> Currently no data available for {{selectedCountry}}.</p>
           </div>
           <div v-else>
-            <ul v-for="([statname, value], i) in Object.entries(selectedCountryStats)" :key="i">
+            <br>
+            <ul v-for="([statname, value], i) in Object.entries(selectedCountryStats).slice(15)"
+            :key="i">
               <p><b>> {{statname}}:</b> {{value}}</p>
             </ul>
           </div>
@@ -72,7 +74,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4geodata_worldLow from '@amcharts/amcharts4-geodata/worldLow';
-import mapsData from '../data/maps';
+import mapsData, { convert3LetterCountry, convert2LetterCountry } from '../data/maps';
 
 am4core.useTheme(am4themes_animated);
 
@@ -114,21 +116,25 @@ export default {
     // Configure series
     const polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = '{name}';
-    polygonTemplate.fill = am4core.color('#74B266');
+    polygonTemplate.fill = am4core.color('#ffffff');
 
     // Create hover state and set alternative fill color
     const hs = polygonTemplate.states.create('hover');
     hs.properties.fill = am4core.color('#367B25');
+    window.polygonSeries = polygonSeries;
+    window.am4core = am4core;
 
     polygonTemplate.events.on('hit', (ev) => {
+      window.selectedCountryCode = convert2LetterCountry(ev.target.dataItem.dataContext.id);
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
+      /* eslint-disable */
       this.selectedCountry = ev.target.dataItem.dataContext.name;
+     
       this.dialog = !this.dialog;
       // get object info
-      /* eslint-disable */
-      if (mapsData.hasOwnProperty(this.selectedCountry)) {
-        this.selectedCountryStats = mapsData[this.selectedCountry];
+      if (mapsData.hasOwnProperty(window.selectedCountryCode)) {
+        this.selectedCountryStats = mapsData[window.selectedCountryCode];
       } else {
         this.selectedCountryStats = {};
       }
@@ -143,6 +149,17 @@ export default {
       // get object info
       console.log(ev.target.dataItem.dataContext.name);
     });
+
+    // COLORISED COUNTRIES WE HAVE DATA
+    setTimeout(() => {
+      const countriesDataAvailable = Object.keys(mapsData).map(convert3LetterCountry);
+      window.countriesDataAvailable = countriesDataAvailable;
+      countriesDataAvailable.forEach((key) => {
+        try {
+          polygonSeries.getPolygonById(key).fill = am4core.color('#74B266');
+        } catch (err) { console.log(err); }
+      });
+    }, 1);
   },
 };
 </script>
