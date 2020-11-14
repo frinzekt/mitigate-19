@@ -128,9 +128,13 @@ export default {
       // zoom to an object
       ev.target.series.chart.zoomToMapObject(ev.target);
       this.selectedCountry = ev.target.dataItem.dataContext.name;
+<<<<<<< HEAD
       window.selectedCountryCode = ev.target.dataItem.dataContext.id;
       console.log(mapsData);
       console.log(window.selectedCountryCode);
+=======
+      window.selectedCountryCode = convert2LetterTo3LetterCountry(ev.target.dataItem.dataContext.id);
+>>>>>>> 3e94e3b6a9cc9a48fc2532247521daa49ffe7ee3
       this.dialog = !this.dialog;
       // get object info
       /* eslint-disable */
