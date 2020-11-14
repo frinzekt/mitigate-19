@@ -7,17 +7,7 @@
         <v-col cols='6'>
           <SimControls />
         </v-col>
-        <!-- <v-col cols='6'>
-          <v-card class='pa-4 ma-4'>
-            <GraphSim
-            :graphElement='newCasesDiv'
-            />
-            <div :id='newCasesDiv' class='graph'>
-            </div>
-          </v-card>
-        </v-col> -->
         <v-col cols='6'>
-          <wrap>
             <v-card>
               <GraphSim
               :graphElement='totalCasesDiv'
@@ -25,9 +15,7 @@
               <div :id='totalCasesDiv' class='graph'>
               </div>
             </v-card>
-          </wrap>
           <br/>
-          <wrap>
              <v-card>
               <GraphSim
               :graphElement='newCasesDiv'
@@ -35,7 +23,6 @@
               <div :id='newCasesDiv' class='graph'>
               </div>
             </v-card>
-          </wrap>
         </v-col>
       </v-row>
     </v-container>

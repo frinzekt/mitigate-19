@@ -5,25 +5,43 @@
       <v-card-text>
         <ul>
           <li>
-            <v-slider
-          max="950"
-          min="50"
-          v-model="speed"
-          @change="changeSpeed"
-          color='accent'
-          :label="`Simulation speed (${speedDisplay})`"
-        ></v-slider>
+            <v-row>
+              <v-col cols="12" sm="6" md="4" depressed>
+                  <p class="pa-2"><b>Simulation speed</b> ({{speedDisplay}})</p>
+              </v-col>
+              <v-col cols="6" md="8">
+                <v-slider
+              max="950"
+              min="50"
+              depressed
+              v-model="speed"
+              @change="changeSpeed"
+              color="accent"
+            ></v-slider>
+              </v-col>
+            </v-row>
           </li>
-          <li v-for='(mit, i) in mitigations' :key='mit.id'>
-            <v-slider
-            :label='`${mit.name} (${mitigations[i].level})`'
-            v-model='mitigations[i]["level"]'
-            color='accent'
-            :max='mit.levels - 1'
-            @change='changeParams(i)'
-            min=0
-            >
-            </v-slider>
+
+          <li v-for="(mit, i) in mitigations" :key="mit.id">
+           <v-card>
+            <v-row>
+              <v-col cols="12" sm="6" md="4" depressed>
+                  <p class="pa-2" > {{mit.name}} </p>
+              </v-col>
+              <v-col cols="6" md="8">
+                  <v-slider
+                    :label="` (${mitigations[i].level})`"
+                    v-model="mitigations[i]['level']"
+                    color="accent"
+                    depressed
+                    :max="mit.levels - 1"
+                    @change="changeParams(i)"
+                    min="0"
+                  >
+                  </v-slider>
+              </v-col>
+            </v-row>
+           </v-card>
           </li>
         </ul>
       </v-card-text>
@@ -85,7 +103,7 @@ export default {
 };
 </script>
 <style scoped>
-  li {
-    list-style-type: none;
-  }
+li {
+  list-style-type: none;
+}
 </style>

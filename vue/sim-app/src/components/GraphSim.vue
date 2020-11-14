@@ -32,7 +32,7 @@ export default {
         },
       },
       config: {
-        // responsive: true,
+        responsive: false,
       },
     };
   },
