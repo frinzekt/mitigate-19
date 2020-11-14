@@ -94,6 +94,14 @@ export default {
       // get object info
       console.log(ev.target.dataItem.dataContext.name);
     });
+    // PREVENT RIGHT CLICK CONTEXT MENU
+    document.addEventListener('contextmenu', (event) => event.preventDefault());
+    polygonTemplate.events.on('rightclick', (ev) => {
+      chart.goHome();
+
+      // get object info
+      console.log(ev.target.dataItem.dataContext.name);
+    });
   },
 };
 </script>
