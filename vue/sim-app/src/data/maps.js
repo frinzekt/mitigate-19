@@ -646,3 +646,5 @@ export const convert2LetterTo3LetterCountry = (twoLetter) => countryMapping.filt
 export const convert3LetterTo2LetterCountry = (threeLetter) => countryMapping.filter(countryObject => countryObject.let3 == threeLetter)[0].let2
 
 export default mapsData;
+
+/* eslint-enable */
