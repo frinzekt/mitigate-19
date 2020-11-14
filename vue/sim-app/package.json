@@ -11,6 +11,7 @@
     "@amcharts/amcharts4": "^4.10.11",
     "@amcharts/amcharts4-geodata": "^4.1.19",
     "core-js": "^3.6.5",
+    "jstat": "^1.9.4",
     "plotly.js-dist": "^1.57.1",
     "vue": "^2.6.11",
     "vue-cli": "^2.9.6",
