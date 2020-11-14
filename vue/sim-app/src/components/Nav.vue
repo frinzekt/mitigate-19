@@ -6,6 +6,12 @@
     >
       Home
     </v-btn>
+    <v-spacer></v-spacer>
+    <v-btn
+    @click='$vuetify.theme.dark = !$vuetify.theme.dark;'
+    >
+      Toggle dark mode
+    </v-btn>
   </v-app-bar>
 </template>
 

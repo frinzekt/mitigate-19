@@ -3,15 +3,27 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-function calculateCases(mitigationLevels, mitigationEffects, currentDay) {
-  const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
+function calculateStringency(mitigationLevels) {
+  const measureSum = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
     if (typeof mitigationLevels[mitKey] !== 'undefined') {
-      return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
+      return acc + mitigationLevels[mitKey];
     }
     return acc;
   }, 0);
-  return mitigationEffects[0] + coefficientVals + mitigationEffects[14] * currentDay;
+  return 36 / (36 + measureSum);
 }
+function calculateTotalCases(stringency) {
+  return 91 + 47654450 * Math.exp(15 * stringency);
+}
+// function calculateCases(mitigationLevels, mitigationEffects, currentDay) {
+//   const coefficientVals = Object.keys(mitigationLevels).reduce((acc, mitKey) => {
+//     if (typeof mitigationLevels[mitKey] !== 'undefined') {
+//       return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
+//     }
+//     return acc;
+//   }, 0);
+//   return mitigationEffects[0] + coefficientVals + mitigationEffects[14] * currentDay;
+// }
 
 export default new Vuex.Store({
   state: {
@@ -62,9 +74,13 @@ export default new Vuex.Store({
   },
   actions: {
     simulateDay({ commit }) {
-      const { currentDay } = this.getters;
-      const { mitigationLevels, mitigationEffects } = this.state;
-      const newCase = calculateCases(mitigationLevels, mitigationEffects, currentDay);
+      // const { currentDay } = this.getters;
+      // const { mitigationLevels, mitigationEffects } = this.state;
+      const { mitigationLevels } = this.state;
+      // const newCase = calculateCases(mitigationLevels, mitigationEffects, currentDay);
+      const stringency = calculateStringency(mitigationLevels);
+      console.log(stringency);
+      const newCase = calculateTotalCases(stringency);
       // const newCase = Math.exp(lastCase);
       commit('addCase', newCase);
       commit('addDay');
