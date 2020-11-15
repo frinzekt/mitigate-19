@@ -5,22 +5,27 @@
     id='chartdiv'
     style='width: 100%; height: 100%'
   >
-    <v-dialog v-model='introDialogue' max-width='70%' persistent>
-      <v-card>
-        <v-card-title class='headline'>
-          Welcome to the COVID-19 mitigation strategy simulator.
-        </v-card-title>
-        <v-card-text>
-          Please select a country that you wish to model the mitigation
-          simulation.
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color='green darken-1' text @click='introDialogue = false'>
-            Begin
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-dialog v-model='introDialogue' width='60%' persistent>
+      <v-overlay
+        :z-index="100"
+        :value="introDialogue"
+      >
+        <v-card>
+          <v-card-title class='headline'>
+            Welcome to the COVID-19 mitigation strategy simulator.
+          </v-card-title>
+          <v-card-text>
+            Please select a country that you wish to model the mitigation
+            simulation.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color='green darken-1' text @click='introDialogue = false'>
+              Begin
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-overlay>
     </v-dialog>
     <v-dialog v-model='dialog' persistent max-width='70%'>
       <v-card>
@@ -65,7 +70,9 @@
           <v-btn
             color='green darken-1'
             text
-            @click='(dialog = false), (formDialogue = true)'
+            @click='(dialog = false),
+            (formDialogue = true),
+            (countryInitSusceptible = selectedCountryPopulation - 1)'
             :disabled='Object.keys(this.selectedCountryStats).length == 0'
           >
             Proceed with {{ selectedCountry }}
@@ -79,7 +86,8 @@
         <v-card-title class='headline'>
           Initial {{ selectedCountry }} COVID-19 parameters:
         </v-card-title>
-        <v-card-text>
+        <v-card-text
+        @mouseover="initSusceptibleAdapt">
           <v-form>
             <v-text-field
               class='ma-4'
@@ -95,6 +103,7 @@
               v-model='countryInitInfected'
               required
               type='number'
+              @change='initSusceptibleAdapt'
             ></v-text-field>
 
             <v-text-field
@@ -103,6 +112,7 @@
               v-model='countryInitResolved'
               required
               type='number'
+              @change='initSusceptibleAdapt'
             ></v-text-field>
 
             <v-text-field
@@ -159,9 +169,44 @@ export default {
     countryInitSusceptible: 0,
   }),
   methods: {
+    formDialogueValidator() {
+      if (
+        this.countryInitInfected > this.selectedCountryPopulation
+        || this.countryInitResolved > this.selectedCountryPopulation
+        || this.countryInitResolved + this.countryInitInfected > this.selectedCountryPopulation
+        || this.countryInitResolved < 0
+        || this.countryInitInfected < 1
+        ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    initSusceptibleAdapt() {
+      if (this.countryInitInfected < 1) {
+        this.countryInitInfected = 1;
+      }
+      if (this.countryInitResolved < 0) {
+        this.countryInitResolved = 0;
+      }
+      if (this.countryInitResolved + this.countryInitInfected > this.selectedCountryPopulation) {
+        this.countryInitResolved = 0;
+        this.countryInitInfected = 1;
+      }
+      this.countryInitSusceptible = this.selectedCountryPopulation
+      - this.countryInitInfected
+      - this.countryInitResolved;
+    },
     selectCountry() {
-      this.dialog = false;
-      console.log(this.selectedCountryStats);
+      const valid = this.formDialogueValidator();
+      if (valid === true) {
+        this.formDialogue = false;
+        console.log(this.selectedCountryStats);
+      } else {
+        alert('ERROR: Non-conformity found in initial values. Please correct input values.')
+        this.countryInitResolved = 0;
+        this.countryInitInfected = 1;
+      }
     },
     zoomOutBro() {
       this.dialog = false;
@@ -174,6 +219,8 @@ export default {
       this.dialog = false;
       this.selectedCountry = '';
       this.selectedCountryPopulation = 0;
+      this.countryInitInfected = 1;
+      this.countryInitResolved = 0;
       window.chart.goHome();
     },
     capFirst(stringg) {
