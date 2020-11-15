@@ -163,9 +163,9 @@ export default new Vuex.Store({
       newTotalCases = Math.round(newTotalCases);
 
       const uncontrolledR = Math.exp(getIntercept) + randomNoise;
-      let newUncontrolledCase = (uncontrolledR * lastUncontrolledCase) >= lastUncontrolledCase;
-      newUncontrolledCase = Math.round(newUncontrolledCase)
+      let newUncontrolledCase = (uncontrolledR * lastUncontrolledCase) >= lastUncontrolledCase
         ? (uncontrolledR * lastUncontrolledCase) : lastUncontrolledCase;
+      newUncontrolledCase = Math.round(newUncontrolledCase);
       if (newUncontrolledCase >= this.getters.getPopulation) {
         newUncontrolledCase = this.getters.getPopulation;
       }
