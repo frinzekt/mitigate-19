@@ -73,43 +73,34 @@ export default new Vuex.Store({
     setInitState(state, stateObj) {
       state.days = [...state.days, 1];
       state.cases = [
-        ...state.cases,
         stateObj.initialInfected + stateObj.initialResolved,
       ];
       state.uncontrolledCases = [
-        ...state.uncontrolledCases,
         stateObj.initialInfected + stateObj.initialResolved,
       ];
       state.newCases = [
-        ...state.newCases,
         0,
       ];
       state.currentCases = {
-        ...state.currentCases,
         0: stateObj.initialInfected,
       };
       state.susceptible = [
-        ...state.susceptible,
         stateObj.initialSusceptible,
       ];
       state.initialSusceptible = stateObj.initialSusceptible;
       state.population = stateObj.population;
       state.totalResCases = stateObj.initialResolved;
       state.susceptibleCases = [
-        ...state.susceptibleCases,
         stateObj.initialSusceptible,
       ];
       state.activeCases = [
-        ...state.activeCases,
         stateObj.initialInfected,
       ];
       state.resolvedCases = [
-        ...state.resolvedCases,
         stateObj.initialResolved,
       ];
       state.intercept = stateObj.intercept;
       state.mitigationEffects = stateObj.coefficients;
-      console.log(this.state);
     },
     addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
