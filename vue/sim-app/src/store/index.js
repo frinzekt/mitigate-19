@@ -34,6 +34,7 @@ export default new Vuex.Store({
     resolvedCases: [],
     intercept: 0,
     mitigationEffects: {},
+    countryName: '',
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
@@ -195,12 +196,16 @@ export default new Vuex.Store({
       const { mitigationLevels, mitigationEffects } = this.state;
       const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
       commit('adjustLevels');
-      const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept))
-         + jStat.normal.sample(0, 0.1);
-      let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
-        ? (Math.exp(rVal) * lastCase) : (lastCase);
+      const randomNoise = jStat.normal.sample(0, 0.1);
+      const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept));
+      let newTotalCases = (Math.exp(rVal) + randomNoise) * lastCase >= lastCase
+        ? ((Math.exp(rVal) + randomNoise) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
-      let newUncontrolledCase = Math.exp(getIntercept) * lastUncontrolledCase;
+
+      const uncontrolledR = Math.exp(getIntercept) + randomNoise;
+      let newUncontrolledCase = (uncontrolledR * lastUncontrolledCase) >= lastUncontrolledCase
+        ? (uncontrolledR * lastUncontrolledCase) : lastUncontrolledCase;
+      newUncontrolledCase = Math.round(newUncontrolledCase);
       if (newUncontrolledCase >= this.getters.getPopulation) {
         newUncontrolledCase = this.getters.getPopulation;
       }
