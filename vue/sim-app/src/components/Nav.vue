@@ -13,14 +13,14 @@
     class='accent darken-1 ma-1'
     small
     >
-      Home
+    Country Select
     </v-btn>
     <v-btn
     small
     class="ma-1"
     @click='$vuetify.theme.dark = !$vuetify.theme.dark;'
     >
-      Toggle Dark Theme
+      Toggle Theme
     </v-btn>
   </v-app-bar>
 </template>
