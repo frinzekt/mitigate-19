@@ -226,11 +226,10 @@ export default {
         initialSusceptible: this.countryInitSusceptible,
         countryName: this.selectedCountry,
       };
-      this.$store.commit('setInitState', stateObj);
-      this.$router.push('/home');
       const valid = this.formDialogueValidator();
       if (valid === true) {
         this.formDialogue = false;
+        this.$store.commit('setInitState', stateObj);
         console.log(this.selectedCountryStats);
         this.routeToSimulation();
       } else {
