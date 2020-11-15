@@ -221,9 +221,9 @@ export default {
       }
       const stateObj = {
         ...countryStats,
-        initialInfected: this.countryInitInfected,
-        initialResolved: this.countryInitResolved,
-        initialSusceptible: this.countryInitSusceptible,
+        initialInfected: parseInt(this.countryInitInfected),
+        initialResolved: parseInt(this.countryInitResolved),
+        initialSusceptible: parseInt(this.countryInitSusceptible),
         countryName: this.selectedCountry,
       };
       const valid = this.formDialogueValidator();
@@ -231,6 +231,7 @@ export default {
         this.formDialogue = false;
         this.$store.commit('setInitState', stateObj);
         console.log(this.selectedCountryStats);
+        console.log(stateObj);
         this.routeToSimulation();
       } else {
         alert('ERROR: Non-conformity found in initial values. Please correct input values.')
