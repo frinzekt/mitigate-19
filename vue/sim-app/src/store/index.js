@@ -34,26 +34,11 @@ export default new Vuex.Store({
     activeCases: [],
     resolvedCases: [],
     intercept: 0,
-    mitigationEffects: {
-      // 0: -0.1829422386127879,
-      // 1: -0.07784000618252508,
-      // 2: -0.06234176943449615,
-      // 3: -0.07425903166854986,
-      // 4: -0.06470419291570209,
-      // 5: -0.08960897735105754,
-      // 6: -0.1675574311170926,
-      // 7: -0.2147396364283757,
-      // 8: -0.08269826212945952,
-      // 9: -0.07521791465366225,
-      // 10: -0.07364026019361672,
-      // 11: -0.015906575848049855,
-      // 12: -0.07364026019361689,
-      // 13: -0.001825573333957288,
-
-    },
+    mitigationEffects: {},
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
+    getCountryName: (state) => (state.countryName),
     getUncontrolledCase: (state) => (state.uncontrolledCases.slice(-1)[0]),
     getUncontrolledCaseData: (state) => ({ x: state.days, y: state.uncontrolledCases }),
     getNewCaseData: (state) => ({ x: state.days, y: state.newCases }),
@@ -71,7 +56,7 @@ export default new Vuex.Store({
   mutations: {
     // eslint-disable-next-line
     setInitState(state, stateObj) {
-      state.days = [...state.days, 1];
+      state.days = [1];
       state.cases = [
         stateObj.initialInfected + stateObj.initialResolved,
       ];
@@ -101,6 +86,7 @@ export default new Vuex.Store({
       ];
       state.intercept = stateObj.intercept;
       state.mitigationEffects = stateObj.coefficients;
+      state.countryName = stateObj.countryName;
     },
     addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
