@@ -11,8 +11,6 @@ const _jstat = _interopRequireDefault(require('jstat'));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _readOnlyError(name) { throw new Error(`"${name}" is read-only`); }
-
 function ownKeys(object, enumerableOnly) { const keys = Object.keys(object); if (Object.getOwnPropertySymbols) { let symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter((sym) => Object.getOwnPropertyDescriptor(object, sym).enumerable); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (let i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach((key) => { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach((key) => { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -213,15 +211,15 @@ const _default = new _vuex.default.Store({
 
       const randomNoise = _jstat.default.normal.sample(0, 0.1);
 
-      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept) + randomNoise;
-      let newTotalCases = Math.exp(rVal) * lastCase >= lastCase ? Math.exp(rVal) * lastCase : lastCase;
+      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept);
+      let newTotalCases = (Math.exp(rVal) + randomNoise) * lastCase >= lastCase ? Math.exp(rVal) * lastCase : lastCase;
       newTotalCases = Math.round(newTotalCases);
       const uncontrolledR = Math.exp(getIntercept) + randomNoise;
       let newUncontrolledCase = uncontrolledR * lastUncontrolledCase >= lastUncontrolledCase;
-      newUncontrolledCase = (_readOnlyError('newUncontrolledCase'), Math.round(newUncontrolledCase) ? uncontrolledR * lastUncontrolledCase : lastUncontrolledCase);
+      newUncontrolledCase = Math.round(newUncontrolledCase) ? uncontrolledR * lastUncontrolledCase : lastUncontrolledCase;
 
       if (newUncontrolledCase >= this.getters.getPopulation) {
-        newUncontrolledCase = (_readOnlyError('newUncontrolledCase'), this.getters.getPopulation);
+        newUncontrolledCase = this.getters.getPopulation;
       }
 
       if (newTotalCases >= this.getters.getPopulation) {

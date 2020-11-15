@@ -157,9 +157,8 @@ export default new Vuex.Store({
       const { mitigationLevels, mitigationEffects } = this.state;
       const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
       const randomNoise = jStat.normal.sample(0, 0.1);
-      const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept))
-        + randomNoise;
-      let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
+      const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept));
+      let newTotalCases = (Math.exp(rVal) + randomNoise) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
 
