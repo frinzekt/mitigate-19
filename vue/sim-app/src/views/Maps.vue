@@ -350,7 +350,7 @@ export default {
           // console.log(err);
         }
       });
-    }, 100); // HACK COLOR
+    }, 1000); // HACK COLOR
   },
 };
 </script>
