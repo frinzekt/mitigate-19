@@ -20,37 +20,35 @@ function calculateTotalCases(mitigationLevels, mitigationEffects, intercept) {
 
 export default new Vuex.Store({
   state: {
-    days: [1],
-    cases: [1],
-    uncontrolledCases: [1],
-    newCases: [1],
-    currentCases: {
-      0: 1,
-    },
-    susceptible: [0],
+    days: [],
+    cases: [],
+    uncontrolledCases: [],
+    newCases: [],
+    currentCases: {},
+    susceptible: [],
     mitigationLevels: {},
-    initialSusceptible: 25000000,
-    population: 25000000,
+    initialSusceptible: 0,
+    population: 0,
     totalResCases: 0,
-    susceptibleCases: [25000000],
-    activeCases: [1],
-    resolvedCases: [0],
-    intercept: 0.6931471805599453,
+    susceptibleCases: [],
+    activeCases: [],
+    resolvedCases: [],
+    intercept: 0,
     mitigationEffects: {
-      0: -0.1829422386127879,
-      1: -0.07784000618252508,
-      2: -0.06234176943449615,
-      3: -0.07425903166854986,
-      4: -0.06470419291570209,
-      5: -0.08960897735105754,
-      6: -0.1675574311170926,
-      7: -0.2147396364283757,
-      8: -0.08269826212945952,
-      9: -0.07521791465366225,
-      10: -0.07364026019361672,
-      11: -0.015906575848049855,
-      12: -0.07364026019361689,
-      13: -0.001825573333957288,
+      // 0: -0.1829422386127879,
+      // 1: -0.07784000618252508,
+      // 2: -0.06234176943449615,
+      // 3: -0.07425903166854986,
+      // 4: -0.06470419291570209,
+      // 5: -0.08960897735105754,
+      // 6: -0.1675574311170926,
+      // 7: -0.2147396364283757,
+      // 8: -0.08269826212945952,
+      // 9: -0.07521791465366225,
+      // 10: -0.07364026019361672,
+      // 11: -0.015906575848049855,
+      // 12: -0.07364026019361689,
+      // 13: -0.001825573333957288,
 
     },
   },
@@ -70,16 +68,48 @@ export default new Vuex.Store({
     getIntercept: (state) => (state.intercept),
   },
   mutations: {
-    // initialState(initialSusceptible, initialInfected, countryCode) {
-    //  THIS NEEDS TO BE CHEKED
-    // state.initialSusceptible = initialSusceptible;
-    // state.population = mapsData[countryCode].population;
-    // const countryStatistic = mapsData[countryCode].slice(0, 15);
-    // state.mitigationEffects = { ...countryStatistic };
-    // state.cases = initialInfected > 0 ? [initialInfected] : [1];
-    // state.newCases = initialInfected > 0 ? [initialInfected] : [1];
-    // state.currentCases = initialInfected > 0 ? { 0: initialInfected } : { 0: 1 };
-    // },
+    // eslint-disable-next-line
+    setInitState(state, stateObj) {
+      state.days = [...state.days, 1];
+      state.cases = [
+        ...state.cases,
+        stateObj.initialInfected + stateObj.initialResolved,
+      ];
+      state.uncontrolledCases = [
+        ...state.uncontrolledCases,
+        stateObj.initialInfected + stateObj.initialResolved,
+      ];
+      state.newCases = [
+        ...state.newCases,
+        0,
+      ];
+      state.currentCases = {
+        ...state.currentCases,
+        0: stateObj.initialInfected,
+      };
+      state.susceptible = [
+        ...state.susceptible,
+        stateObj.initialSusceptible,
+      ];
+      state.initialSusceptible = stateObj.initialSusceptible;
+      state.population = stateObj.population;
+      state.totalResCases = stateObj.initialResolved;
+      state.susceptibleCases = [
+        ...state.susceptibleCases,
+        stateObj.initialSusceptible,
+      ];
+      state.activeCases = [
+        ...state.activeCases,
+        stateObj.initialInfected,
+      ];
+      state.resolvedCases = [
+        ...state.resolvedCases,
+        stateObj.initialResolved,
+      ];
+      state.intercept = stateObj.intercept;
+      state.mitigationEffects = stateObj.coefficients;
+      console.log(this.state);
+    },
     addNewTotalCase(state, newCase) {
       state.cases = [...state.cases, newCase];
     },
