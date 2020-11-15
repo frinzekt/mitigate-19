@@ -5,7 +5,7 @@
       justify="center"
         wrap
         >
-          <v-col cols='6'>
+          <v-col cols='12'>
             <SimStatistics />
           </v-col>
         </v-row>

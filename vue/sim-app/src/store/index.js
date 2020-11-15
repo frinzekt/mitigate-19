@@ -56,6 +56,7 @@ export default new Vuex.Store({
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
+    getUncontrolledCase: (state) => (state.uncontrolledCases.slice(-1)[0]),
     getUncontrolledCaseData: (state) => ({ x: state.days, y: state.uncontrolledCases }),
     getNewCaseData: (state) => ({ x: state.days, y: state.newCases }),
     currentDay: (state) => (state.days.slice(-1)[0]),
