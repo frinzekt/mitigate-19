@@ -226,12 +226,12 @@ export default {
         initialSusceptible: this.countryInitSusceptible,
         countryName: this.selectedCountry,
       };
-      this.$store.commit('setInitState', stateObj);
-      this.$router.push('/home');
       const valid = this.formDialogueValidator();
       if (valid === true) {
         this.formDialogue = false;
+        this.$store.commit('setInitState', stateObj);
         console.log(this.selectedCountryStats);
+        this.routeToSimulation();
       } else {
         alert('ERROR: Non-conformity found in initial values. Please correct input values.')
         this.countryInitResolved = 0;
@@ -268,6 +268,9 @@ export default {
       } else if (stringg === 'Life expectancy') {
         return ' Years';
       }
+    },
+    routeToSimulation() {
+      this.$router.push('/home');
     },
     /* eslint-enable */
   },
