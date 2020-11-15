@@ -198,6 +198,36 @@ export default {
       - this.countryInitResolved;
     },
     selectCountry() {
+      this.formDialogue = false;
+      const countryStats = {
+        intercept: this.selectedCountryStats[0],
+        population: this.selectedCountryStats.population,
+        coefficients: {
+          0: this.selectedCountryStats[1],
+          1: this.selectedCountryStats[2],
+          2: this.selectedCountryStats[3],
+          3: this.selectedCountryStats[4],
+          4: this.selectedCountryStats[5],
+          5: this.selectedCountryStats[6],
+          6: this.selectedCountryStats[7],
+          7: this.selectedCountryStats[8],
+          8: this.selectedCountryStats[9],
+          9: this.selectedCountryStats[10],
+          10: this.selectedCountryStats[11],
+          11: this.selectedCountryStats[12],
+          12: this.selectedCountryStats[13],
+          13: this.selectedCountryStats[14],
+        },
+      }
+      const stateObj = {
+        ...countryStats,
+        initialInfected: this.countryInitInfected,
+        initialResolved: this.countryInitResolved,
+        initialSusceptible: this.countryInitSusceptible,
+        countryName: this.selectedCountry,
+      };
+      this.$store.commit('setInitState', stateObj);
+      this.$router.push('/home');
       const valid = this.formDialogueValidator();
       if (valid === true) {
         this.formDialogue = false;
