@@ -93,7 +93,6 @@
               class='ma-4'
               label='Infected Persons'
               v-model='countryInitInfected'
-              :rules='rules'
               required
               type='number'
             ></v-text-field>
@@ -103,7 +102,6 @@
               label='Resolved Cases'
               v-model='countryInitResolved'
               required
-              :rules='rules'
               type='number'
             ></v-text-field>
 
@@ -123,7 +121,7 @@
           <v-btn
             color='green darken-1'
             text
-            @click='dialog = false'
+            @click='selectCountry'
             :disabled='Object.keys(this.selectedCountryStats).length == 0'
           >
             Proceed with {{ selectedCountry }}
@@ -159,34 +157,12 @@ export default {
     countryInitResolved: 0,
     /* eslint-disable */
     countryInitSusceptible: 0,
-    rules: [
-      // () => this.countryInitInfected > this.selectedCountryPopulation - 1 || 'Error',
-      // () => this.countryInitResolved > this.selectedCountryPopulation - 1 || 'Error',
-      // () => this.countryInitInfected < 1 || this.selectedCountryPopulation - 1 || 'Error',
-      // () => this.countryInitInfected + this.countryInitResolved < this.selectedCountryPopulation - 1 || 'Error',
-    ],
-    /* eslint-enable */
-    // maxRules: [
-    //   numMax: (v) => {
-    //     if (this.countryInitInfected > this.selectedCountryPopulation - 1) {
-    //       return 'Error';
-    //     }
-    //     if (this.countryInitResolved > this.selectedCountryPopulation - 1) {
-    //       return 'Error';
-    //     }
-    //     if (this.countryInitInfected < 1 || this.countryInitResolved < 1) {
-    //       return 'Error';
-    //     }
-    //     if (
-    //       this.countryInitInfected + this.countryInitResolved >
-    //       this.selectedCountryPopulation - 1
-    //     ) {
-    //       return 'Error';
-    //     }
-    //   },
-    // ],
   }),
   methods: {
+    selectCountry() {
+      this.dialog = false;
+      console.log(this.selectedCountryStats);
+    },
     zoomOutBro() {
       this.dialog = false;
       this.selectedCountry = '';
@@ -290,7 +266,7 @@ export default {
         try {
           polygonSeries.getPolygonById(key).fill = am4core.color('#74B266');
         } catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       });
     }, 100); // HACK COLOR
