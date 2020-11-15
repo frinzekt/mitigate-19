@@ -5,7 +5,7 @@
         <v-card>
           <br>
         <v-row align="center" justify="center">
-          <h1> {{ $store.getCountryName }}</h1>
+          <h1> {{ $store.getters.getCountryName }}</h1>
         </v-row>
         <v-col  depressed class="text-center">
               <h3>DAY: {{ $store.getters.currentDay }}</h3>

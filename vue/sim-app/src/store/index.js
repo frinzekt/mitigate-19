@@ -35,6 +35,7 @@ export default new Vuex.Store({
     resolvedCases: [],
     intercept: 0,
     mitigationEffects: {},
+    countryName: '',
   },
   getters: {
     getCaseData: (state) => ({ x: state.days, y: state.cases }),
@@ -156,7 +157,7 @@ export default new Vuex.Store({
       const { mitigationLevels, mitigationEffects } = this.state;
       const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
       const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept))
-         + jStat.normal.sample(0, 0.1);
+        + jStat.normal.sample(0, 0.1);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
