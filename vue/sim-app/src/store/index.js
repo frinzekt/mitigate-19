@@ -169,7 +169,8 @@ export default new Vuex.Store({
     simulateDay({ commit }) {
       const { mitigationLevels, mitigationEffects } = this.state;
       const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
-      const rVal = calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept);
+      const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept))
+         + jStat.normal.sample(0, 0.1);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
         ? (Math.exp(rVal) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
