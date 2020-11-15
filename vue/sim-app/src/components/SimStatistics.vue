@@ -88,21 +88,21 @@
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <!-- NO MITIGATIONS -->
-              <h3>TOTAL CASES: <br> {{ $store.getters.lastCase }} </h3>
+              <h3>TOTAL CASES: <br> {{ $store.getters.getUncontrolledCase }} </h3>
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <h3>ACTIVE CASES: <br> {{ $store.getters.getActiveCases }} </h3>
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <!-- NO MITIGATIONS -->
-              <h3>ACTIVE CASES: <br> {{ $store.getters.getActiveCases }} </h3>
+              <!-- <h3>ACTIVE CASES: <br> {{ $store.getters.getActiveCases }} </h3> -->
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <h3>RESOLVED: <br>{{ $store.getters.getResolvedCases }} </h3>
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <!-- NO MITIGATIONS -->
-              <h3>RESOLVED: <br>{{ $store.getters.getResolvedCases }} </h3>
+              <!-- <h3>RESOLVED: <br>{{ $store.getters.getResolvedCases }} </h3> -->
             </v-col>
           </v-row>
         </v-card>
