@@ -202,6 +202,7 @@ export default {
       if (valid === true) {
         this.formDialogue = false;
         console.log(this.selectedCountryStats);
+        this.routeToSimulation();
       } else {
         alert('ERROR: Non-conformity found in initial values. Please correct input values.')
         this.countryInitResolved = 0;
@@ -238,6 +239,9 @@ export default {
       } else if (stringg === 'Life expectancy') {
         return ' Years';
       }
+    },
+    routeToSimulation() {
+      this.$router.push('/home');
     },
     /* eslint-enable */
   },
