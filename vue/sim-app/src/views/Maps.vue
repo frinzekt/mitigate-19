@@ -230,8 +230,6 @@ export default {
       if (valid === true) {
         this.formDialogue = false;
         this.$store.commit('setInitState', stateObj);
-        console.log(this.selectedCountryStats);
-        console.log(stateObj);
         this.routeToSimulation();
       } else {
         alert('ERROR: Non-conformity found in initial values. Please correct input values.')
@@ -326,7 +324,6 @@ export default {
         this.selectedCountryPopulation = 1;
       }
       /* eslint-enable */
-      console.log(ev.target.dataItem.dataContext.name);
     });
     // PREVENT RIGHT CLICK CONTEXT MENU
     document.addEventListener('contextmenu', (event) => event.preventDefault());

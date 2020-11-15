@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import jStat from 'jstat';
-// import mapsData from '../data/maps';
 
 Vue.use(Vuex);
 
@@ -11,7 +10,7 @@ function calculateTotalCases(mitigationLevels, mitigationEffects, intercept) {
       return acc;
     }
     if (typeof mitigationLevels[mitKey] !== 'undefined') {
-      return acc + mitigationLevels[mitKey] * mitigationEffects[mitKey];
+      return acc + mitigationLevels[mitKey].currentLevel * mitigationEffects[mitKey];
     }
     return acc;
   }, 0);
@@ -55,6 +54,32 @@ export default new Vuex.Store({
   },
   mutations: {
     // eslint-disable-next-line
+    adjustLevels(state) {
+      const newMitLevels = {};
+      Object.keys(state.mitigationLevels).forEach((mitKey) => {
+        const oldMitObj = state.mitigationLevels[mitKey];
+        const { levelQueue, currentLevel } = oldMitObj;
+        const newMitObj = {
+          currentLevel,
+        };
+        const newLevelQueue = [];
+        levelQueue.forEach((level) => {
+          if (level.daysRem - 1 === 0) {
+            newMitObj.currentLevel = level.level;
+            console.log(`14 days hit for ${mitKey} changing level to ${level.level}`);
+          } else {
+            newLevelQueue.push({
+              level: level.level,
+              daysRem: level.daysRem - 1,
+            });
+          }
+        });
+        newMitObj.levelQueue = newLevelQueue;
+        newMitLevels[mitKey] = newMitObj;
+        console.log(levelQueue);
+      });
+      state.mitigationLevels = newMitLevels;
+    },
     setInitState(state, stateObj) {
       state.days = [1];
       state.cases = [
@@ -143,18 +168,33 @@ export default new Vuex.Store({
     },
     changeParam(state, payload) {
       const { id, level } = payload;
-      const mitObj = {};
-      mitObj[id] = level;
+      let mitObj = {};
+      if (!state.mitigationLevels[id]) {
+        mitObj.currentLevel = 0;
+        mitObj.levelQueue = [];
+        mitObj.levelQueue.push({
+          level,
+          daysRem: 14,
+        });
+      } else {
+        mitObj = state.mitigationLevels[id];
+        mitObj.levelQueue.push({
+          level,
+          daysRem: 14,
+        });
+      }
       state.mitigationLevels = {
         ...state.mitigationLevels,
-        ...mitObj,
+        [id]: mitObj,
       };
+      console.log(state.mitigationLevels);
     },
   },
   actions: {
     simulateDay({ commit }) {
       const { mitigationLevels, mitigationEffects } = this.state;
       const { lastCase, lastUncontrolledCase, getIntercept } = this.getters;
+      commit('adjustLevels');
       const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept))
          + jStat.normal.sample(0, 0.1);
       let newTotalCases = Math.exp(rVal) * lastCase >= lastCase
