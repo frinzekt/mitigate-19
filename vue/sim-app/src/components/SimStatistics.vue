@@ -88,7 +88,7 @@
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <!-- NO MITIGATIONS -->
-              <h3>TOTAL CASES: <br> {{ $store.getters.getUncontrolledCase }} </h3>
+              <h3>TOTAL CASES: <br> {{ Math.round($store.getters.getUncontrolledCase) }} </h3>
             </v-col>
             <v-col cols="12" sm="6" md="6" depressed class="text-center">
               <h3>ACTIVE CASES: <br> {{ $store.getters.getActiveCases }} </h3>
