@@ -159,7 +159,7 @@ export default new Vuex.Store({
       const randomNoise = jStat.normal.sample(0, 0.1);
       const rVal = (calculateTotalCases(mitigationLevels, mitigationEffects, getIntercept));
       let newTotalCases = (Math.exp(rVal) + randomNoise) * lastCase >= lastCase
-        ? (Math.exp(rVal) * lastCase) : (lastCase);
+        ? ((Math.exp(rVal) + randomNoise) * lastCase) : (lastCase);
       newTotalCases = Math.round(newTotalCases);
 
       const uncontrolledR = Math.exp(getIntercept) + randomNoise;
